@@ -1,0 +1,47 @@
+* verb-env
+
+Multiple environments for your ~[[https://github.com/federicotdn/verb][verb-mode]]~.
+
+** Installation
+
+Install with ~straight.el~ + ~use-package~:
+
+#+begin_src emacs-lisp
+(use-package verb-env
+  :straight (verb-env :host github :repo "rodweb/verb-env" :branch "main")
+  :custom (verb-env-default "tst")
+  :hook (verb-mode . verb-env-mode))
+#+end_src
+
+** Customizing
+
+| variable                     | description                                       | default |
+| ~verb-env-default~           | Default environment                               | nil     |
+| ~verb-env-environments~      | List of variables by environment                  | nil     |
+| ~verb-env-always-unset-vars~ | Always unset variables when changing environments | t       |
+
+** Switching environments
+
+~verb-env-select~ (~C-c C-r C-a~) to select a different environment
+
+** Defining file local environment variables
+
+Create a ~.dir-locals.el~ file:
+
+#+begin_src emacs-lisp
+((nil . ((eval . (set (make-local-variable 'verb-env-environments)
+                      '(("dev" .
+                         ((url . "http://localhost:3000/api/v1")
+                          (api-key . "my_dev_api_key")))
+                        ("tst" .
+                         ((url . "http://my-tst-url/api/v1")
+                          (api-key . "my_tst_api_key")))
+                        ("stg" .
+                         ((url . "https://my-stg-url/api/v1")
+                          (api-key . "my_stg_api_key")))
+                        ("prd" .
+                         ((url . "https://my-prd-url/api/v1")
+                          (api-key . "my_prd_api_key")))))))))
+#+end_src
+
+
